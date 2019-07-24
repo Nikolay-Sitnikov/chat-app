@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
 import asyncio
 import json
@@ -8,8 +8,8 @@ import time # for timestamped messages
 
 logging.basicConfig()
 
-OUT_IP_ADDRESS = "24.12.145.165" # Put IP address here
-INNER_IP_ADDRESS = "192.168.1.114"
+from config import INNER_IP as INNER_IP_ADDRESS
+
 MESSAGES_SINCE_BACKUP = 0
 MESSAGES = []
 
@@ -52,6 +52,7 @@ async def unregister(websocket):
     websocket.close()
 
 async def main_connect(websocket, path):
+    global MESSAGES_SINCE_BACKUP
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     print("USER JOIN")

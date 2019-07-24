@@ -4,7 +4,7 @@ import socket
 EXIT_PROMPT = "Press Enter to exit"
 
 version = sys.version[:5]
-if version[0] !== "3" or int(version[2]) < 7:
+if version[0] != "3" or int(version[2]) < 7:
     print("Version  of python unsufficient: < 3.7.1. Update to a newer version.")
     input(EXIT_PROMPT)
     exit()
@@ -26,12 +26,14 @@ else:
     web = input("Will you be using this over web or only on the Wi-Fi? (web/wifi) ")
     if web == "web":
         OUTER = input("Enter the public IP: ")
-    elif web = "wifi":
+    elif web == "wifi":
         OUTER = INNER
     else:
         print("Not one of the options")
         input(EXIT_PROMPT)
         exit()
 print("Saving to config file...", end="")
-with fp as open("./config.py", "x"):
+with open("./config.py", "x") as fp:
     fp.write("INNER_IP=\"%s\"\nOUTER_IP=\"%s\"" % (INNER, OUTER))
+
+input(EXIT_PROMPT)

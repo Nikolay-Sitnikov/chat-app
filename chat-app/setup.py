@@ -36,4 +36,5 @@ print("Saving to config file...", end="")
 with open("./config.py", "x") as fp:
     fp.write("INNER_IP=\"%s\"\nOUTER_IP=\"%s\"" % (INNER, OUTER))
 
+print("Done!")
 input(EXIT_PROMPT)

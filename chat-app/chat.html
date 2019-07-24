@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Anynomous Chat</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAADESURBVDhPpZPBDcMgDEUZIxN0mh4zQM5dI8eMl1F65OD+j8C1DSWKivSk8O3/g4mSROQvOuEpaQE7OEGu8JnaEvvdBg0reAP5AWur9UTzyDRCQ5qZx3ZvjsvWAHvLOC2A83XGmQZ2bDWAlyTy0mIhoUyc9tCQ0wZkmhvaPDA3sM82oDTcPAGs34AyQhV1zTTgRjhMoRBXrIMDsgZ0n/EC/xlryGYartiaTwNMyOwkrKmZuACCBo7DO9GLrc/U5j/TfSR9AEYRjjTnrfUvAAAAAElFTkSuQmCC" />
+    <style>li{list-style-type:none;border:#ed0 2px solid;background-color:#FF5;}ul{padding:0;}#errortext{display:none;color:orange;}.del-btn{float:right;height:1em;}</style>
+</head>
+
+<body>
+    <ul id="recv"></ul>
+    <p id="errortext">Error: Unable to connect to server! Please reload.</p>
+    <input id="send" /><button id="send-button">Send</button>
+    <script>
+        const ws = new WebSocket("ws://{ip}:5678/"),
+            messages = document.getElementById("recv"),
+            send = document.getElementById("send"),
+	    password = null;
+        var last_recv = 0;
+        function clearList(elem) {
+            while(elem.firstChild) {
+                elem.removeChild(elem.firstChild);
+            }
+        }
+        function addList(elem, text) {
+            let li = document.createElement("li");
+            li.appendChild(document.createTextNode(text));
+            let del = document.createElement("img")
+            del.src = "https://img.icons8.com/metro/26/000000/delete-sign.png";
+            del.className = "del-btn";
+            del.addEventListener("click", clear)
+	    li.appendChild(del);
+            elem.appendChild(li);
+        }
+        function parse(text) {
+            var message = document.createElement('li'),
+                data = JSON.parse(text);
+            if(data.type === "data") {
+                clearList(messages); // No data
+            }
+            if (data.type === "data" || data.type === "replicate") {
+                // Push in data
+                for(let piece in data.data) {
+                    last_recv = data.data[piece].timestamp;
+                    addList(messages, data.data[piece].message);
+                }
+            } else if (data.type === "update") {
+                if(data.old_timestamp !== last_recv) { // Missed a message
+                    ws.send(`{"action":"replicate","timestamp":${Number(last_recv)}}`);
+                } else {
+                    addList(messages, data.message);
+                    last_recv = data.new_timestamp;
+                }
+            }
+        };
+        ws.onmessage = e => parse(e.data);
+        document.getElementById("send-button").addEventListener("click", e => {
+	    if(!send.value==="") {    
+                ws.send(`{"action":"send","text":"${send.value}"}`);
+                send.value = "";
+	    }
+        });
+	function getElementIndex(node) {
+	    var index = 0;
+	    while ( (node = node.previousElementSibling) ) {
+	        index++;
+	    }
+	    return index;
+	}
+	function clear(e) {
+             let idx = getElementIndex(e.target.parentElement);
+	     if(!password) {
+	     	password = prompt("What is the password?");
+	     }
+	     if(password) {
+        	ws.send(`{"action":"clear","password":"${password}","index":${idx}}`);
+	     }
+        }
+	ws.onclose = e => { document.getElementById("errortext").style.display = "block"; };
+    </script>
+</body>
+
+</html>

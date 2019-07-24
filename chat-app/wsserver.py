@@ -52,6 +52,7 @@ async def unregister(websocket):
     websocket.close()
 
 async def main_connect(websocket, path):
+    global MESSAGES_SINCE_BACKUP
     # register(websocket) sends user_event() to websocket
     await register(websocket)
     print("USER JOIN")

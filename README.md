@@ -15,6 +15,7 @@ Running (for Windows):
   2. Select "Run as Administrator"
   3. Open the run-all.py file
   4. Run the file
+
 Running (for \*nix):
   1. Open the shell
   2. Cd to the chat-app folder

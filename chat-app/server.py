@@ -5,8 +5,8 @@ from os import path, urandom
 from urllib import parse
 from sys import argv
 
-OUT_IP_ADDRESS = "24.12.145.165"
-INNER_IP_ADDRESS = "192.168.1.114"
+from config import OUTER_IP as OUT_IP_ADDRESS, INNER_IP as INNER_IP_ADDRESS
+
 PATH = path.dirname(argv[0])
 
 ONETIMEAUTHKEY = None

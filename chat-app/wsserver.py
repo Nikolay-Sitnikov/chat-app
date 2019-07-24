@@ -8,8 +8,8 @@ import time # for timestamped messages
 
 logging.basicConfig()
 
-OUT_IP_ADDRESS = "24.12.145.165" # Put IP address here
-INNER_IP_ADDRESS = "192.168.1.114"
+from config import INNER_IP as INNER_IP_ADDRESS
+
 MESSAGES_SINCE_BACKUP = 0
 MESSAGES = []
 

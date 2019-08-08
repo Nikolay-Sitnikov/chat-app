@@ -55,7 +55,7 @@
         };
         ws.onmessage = e => parse(e.data);
         document.getElementById("send-button").addEventListener("click", e => {
-	    if(!send.value==="") {    
+	    if(!(send.value==="")) {    
                 ws.send(`{"action":"send","text":"${send.value}"}`);
                 send.value = "";
 	    }

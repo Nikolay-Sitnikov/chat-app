@@ -14,8 +14,8 @@
     <script>
         const ws = new WebSocket("ws://{ip}:5678/"),
             messages = document.getElementById("recv"),
-            send = document.getElementById("send"),
-	    password = null;
+            send = document.getElementById("send");
+	var password = null;
         var last_recv = 0;
         function clearList(elem) {
             while(elem.firstChild) {

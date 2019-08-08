@@ -40,7 +40,7 @@ async def save_to_file(file):
 
 async def handle_autosave():
     ts = time.gmtime(time.time())
-    file = "./backups/%i%i%i-%i:%i-backup.txt" % ts[:5]
+    file = "./backups/%i%i%i-%i.%i-backup.txt" % ts[:5]
     await save_to_file(file)
     await send_message("[SERVER %s] Auto-saved messages to %s" % (time.asctime(ts), file))
 

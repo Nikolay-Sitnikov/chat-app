@@ -46,7 +46,7 @@
                 }
             } else if (data.type === "update") {
                 if(data.old_timestamp !== last_recv) { // Missed a message
-                    ws.send(JSON.stringify({action:"replicate",timestamp:Number(last_recv)}`);
+                    ws.send(JSON.stringify({action:"replicate",timestamp:Number(last_recv)}));
                 } else {
                     addList(messages, data.message);
                     last_recv = data.new_timestamp;

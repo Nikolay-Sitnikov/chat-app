@@ -46,7 +46,7 @@
                 }
             } else if (data.type === "update") {
                 if(data.old_timestamp !== last_recv) { // Missed a message
-                    ws.send(`{"action":"replicate","timestamp":${Number(last_recv)}}`);
+                    ws.send(JSON.stringify({action:"replicate",timestamp:Number(last_recv)}`);
                 } else {
                     addList(messages, data.message);
                     last_recv = data.new_timestamp;
@@ -56,7 +56,7 @@
         ws.onmessage = e => parse(e.data);
         document.getElementById("send-button").addEventListener("click", e => {
 	    if(!(send.value==="")) {    
-                ws.send(`{"action":"send","text":"${send.value}"}`);
+                ws.send(JSON.stringify({action:"send",text:send.value}));
                 send.value = "";
 	    }
         });
@@ -73,7 +73,7 @@
 	     	password = prompt("What is the password?");
 	     }
 	     if(password) {
-        	ws.send(`{"action":"clear","password":"${password}","index":${idx}}`);
+        	ws.send(JSON.stringify({action:"clear",password:password,index:idx}));
 	     }
         }
 	ws.onclose = e => { document.getElementById("errortext").style.display = "block"; };

@@ -22,7 +22,7 @@ def generate_message_json():
         old_ts = 0
     new_ts = MESSAGES[-1]["timestamp"]
     message = MESSAGES[-1]["message"]
-    return '{"type":"update","old_timestamp":%i,"new_timestamp":%i,"message":"%s"}' % (old_ts, new_ts, message)
+    return json.dumps({"type":"update","old_timestamp":old_ts,"new_timestamp":new_ts,"message":message})
 
 async def notify_all(message):
     if USERS:
